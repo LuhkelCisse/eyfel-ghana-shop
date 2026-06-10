@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - EYFEL GHANA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        
+        .dashboard {
+            padding-top: 80px;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            padding: 2rem;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+        }
+        
+        .dashboard-header h1 {
+            color: #000;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+        }
+        
+        .dashboard-header p {
+            color: #333;
+        }
+        
+        .dashboard-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: #2a2a2a;
+            border: none;
+            padding: 1rem 2rem;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn:hover {
+            background: #3a3a3a;
+        }
+        
+        .tab-btn.active {
+            background: #ffd700;
+            color: #000;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffd700;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: #2a2a2a;
+            border: 1px solid #ffd700;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ffed4e;
+        }
+        
+        .submit-btn {
+            background: #ffd700;
+            color: #000;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #ffed4e;
+            transform: translateY(-2px);
+        }
+        
+        .orders-table, .products-table {
+            width: 100%;
+            overflow-x: auto;
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 1rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        
+        th {
+            background: #ffd700;
+            color: #000;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: #2a2a2a;
+        }
+        
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .status-instock {
+            background: #27ae60;
+            color: #fff;
+        }
+        
+        .status-outstock {
+            background: #e74c3c;
+            color: #fff;
+        }
+        
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 1001;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .delete-btn {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+        
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid #ffd700;
+        }
+        
+        .stat-card h3 {
+            color: #ffd700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .tab-content {
+                padding: 1rem;
+            }
+            
+            th, td {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+            
+            .dashboard-tabs {
+                gap: 0.5rem;
+            }
+            
+            .tab-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        h2 {
+            color: #ffd700;
+            margin-bottom: 2rem;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    
+    <div class="dashboard">
+        <div class="dashboard-header">
+            <h1>✨ EYFEL GHANA Admin Dashboard ✨</h1>
+            <p>Manage your fragrance empire</p>
+        </div>
+        
+        <div class="dashboard-tabs">
+            <button class="tab-btn active" onclick="showTab('stats')">📊 Overview</button>
+            <button class="tab-btn" onclick="showTab('add-product')">➕ Add Product</button>
+            <button class="tab-btn" onclick="showTab('manage-products')">📦 Manage Products</button>
+            <button class="tab-btn" onclick="showTab('orders')">📋 Orders</button>
+        </div>
+        
+        <!-- Stats Overview Tab -->
+        <div id="stats" class="tab-content active">
+            <div class="container">
+                <h2>Dashboard Overview</h2>
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card">
+                        <h3>Total Products</h3>
+                        <div class="number" id="totalProducts">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Orders</h3>
+                        <div class="number" id="totalOrders">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Revenue (GHS)</h3>
+                        <div class="number" id="totalRevenue">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Add Product Tab -->
+        <div id="add-product" class="tab-content">
+            <div class="container">
+                <h2><i class="fas fa-plus-circle"></i> Add New Product</h2>
+                <form id="addProductForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Product Name *</label>
+                        <input type="text" id="prodName" required placeholder="e.g., Luxury Rose Perfume">
+                    </div>
+                    <div class="form-group">
+                        <label>Price (GHS) *</label>
+                        <input type="number" id="prodPrice" required placeholder="e.g., 250">
+                    </div>
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select id="prodCategory">
+                            <option value="Perfume">Perfume</option>
+                            <option value="Diffuser">Diffuser</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Status *</label>
+                        <select id="prodStock">
+                            <option value="In Stock">In Stock</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Image</label>
+                        <input type="file" id="prodImage" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="prodDesc" rows="3" placeholder="Describe your product..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Add Product</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Manage Products Tab -->
+        <div id="manage-products" class="tab-content">
+            <div class="container">
+                <h2><i class="fas fa-edit"></i> Manage Products</h2>
+                <div class="products-table">
+                    <table id="productsTable">
+                        <thead>
+                            <tr><th>ID</th><th>Name</th><th>Price</th><th>Stock</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="productsList">
+                            <tr><td colspan="5" class="loading">Loading products...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Orders Tab -->
+        <div id="orders" class="tab-content">
+            <div class="container">
+                <h2><i class="fas fa-shopping-cart"></i> Customer Orders</h2>
+                <div class="orders-table">
+                    <table id="ordersTable">
+                        <thead>
+                            <tr><th>Customer</th><th>Phone</th><th>Location</th><th>Product</th><th>Qty</th><th>Total (GHS)</th><th>Date</th></tr>
+                        </thead>
+                        <tbody id="ordersList">
+                            <tr><td colspan="7" class="loading">Loading orders...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // API base URL
+        const API_URL = 'http://localhost:3000/api';
+        
+        // Show tab function
+        window.showTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Load data when tab is shown
+            if (tabId === 'stats') loadStats();
+            if (tabId === 'manage-products') loadProductsForAdmin();
+            if (tabId === 'orders') loadOrders();
+        };
+        
+        // Load statistics
+        async function loadStats() {
+            try {
+                const productsRes = await fetch(`${API_URL}/products`);
+                const products = await productsRes.json();
+                document.getElementById('totalProducts').textContent = products.length;
+                
+                const ordersRes = await fetch(`${API_URL}/orders`);
+                const orders = await ordersRes.json();
+                document.getElementById('totalOrders').textContent = orders.length;
+                
+                const totalRevenue = orders.reduce((sum, order) => sum + order.total_price, 0);
+                document.getElementById('totalRevenue').textContent = totalRevenue.toFixed(2);
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        // Add product
+        document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('name', document.getElementById('prodName').value);
+            formData.append('price', document.getElementById('prodPrice').value);
+            formData.append('category', document.getElementById('prodCategory').value);
+            formData.append('stock_status', document.getElementById('prodStock').value);
+            formData.append('description', document.getElementById('prodDesc').value);
+            const imageFile = document.getElementById('prodImage').files[0];
+            if (imageFile) formData.append('image', imageFile);
+            
+            try {
+                const response = await fetch(`${API_URL}/products`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    alert('✅ Product added successfully!');
+                    document.getElementById('addProductForm').reset();
+                    loadProductsForAdmin();
+                    loadStats();
+                } else {
+                    alert('❌ Error adding product');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error connecting to server');
+            }
+        });
+        
+        // Load products for admin
+        async function loadProductsForAdmin() {
+            try {
+                const response = await fetch(`${API_URL}/products`);
+                const products = await response.json();
+                
+                const tbody = document.getElementById('productsList');
+                tbody.innerHTML = '';
+                
+                if (products.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="loading">No products found</td></tr>';
+                    return;
+                }
+                
+                products.forEach(product => {
+                    const row = tbody.insertRow();
+                    row.insertCell(0).textContent = product.id;
+                    row.insertCell(1).textContent = product.name;
+                    row.insertCell(2).textContent = `GHS ${product.price}`;
+                    
+                    const statusCell = row.insertCell(3);
+                    const select = document.createElement('select');
+                    select.style.background = '#2a2a2a';
+                    select.style.color = '#fff';
+                    select.style.padding = '5px';
+                    select.style.borderRadius = '5px';
+                    select.style.border = '1px solid #ffd700';
+                    select.innerHTML = `
+                        <option value="In Stock" ${product.stock_status === 'In Stock' ? 'selected' : ''}>In Stock</option>
+                        <option value="Out of Stock" ${product.stock_status === 'Out of Stock' ? 'selected' : ''}>Out of Stock</option>
+                    `;
+                    select.onchange = () => updateStockStatus(product.id, select.value);
+                    statusCell.appendChild(select);
+                    
+                    const actionCell = row.insertCell(4);
+                    actionCell.innerHTML = `<button class="delete-btn" onclick="deleteProduct(${product.id})">Delete</button>`;
+                });
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('productsList').innerHTML = '<tr><td colspan="5" class="loading">Error loading products</td></tr>';
+            }
+        }
+        
+        // Update stock status
+        async function updateStockStatus(productId, status) {
+            try {
+                const response = await fetch(`${API_URL}/products/${productId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ stock_status: status })
+                });
+                
+                if (response.ok) {
+                    alert('✅ Stock status updated!');
+                    loadStats();
+                }
+            } catch (error) {
+                console.error('Error updating stock:', error);
+            }
+        }
+        
+        // Delete product
+        window.deleteProduct = async function(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                try {
+                    const response = await fetch(`${API_URL}/products/${productId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (response.ok) {
+                        alert('✅ Product deleted successfully!');
+                        loadProductsForAdmin();
+                        loadStats();
+                    }
+                } catch (error) {
+                    console.error('Error deleting product:', error);
+                }
+            }
+        };
+        
+        // Load orders
+        async function loadOrders() {
+            try {
+                const response = await fetch(`${API_URL}/orders`);
+                const orders = await response.json();
+                
+                const tbody = document.getElementById('ordersList');
+                tbody.innerHTML = '';
+                
+                if (orders.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="loading">No orders yet</td></tr>';
+                    return;
+                }
+                
+                orders.forEach(order => {
+                    const row = tbody.insertRow();
+                    row.insertCell(0).textContent = order.customer_name;
+                    row.insertCell(1).textContent = order.customer_phone;
+                    row.insertCell(2).textContent = order.customer_location;
+                    row.insertCell(3).textContent = order.product_name;
+                    row.insertCell(4).textContent = order.quantity;
+                    row.insertCell(5).textContent = `GHS ${order.total_price}`;
+                    row.insertCell(6).textContent = new Date(order.order_date).toLocaleDateString();
+                });
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                document.getElementById('ordersList').innerHTML = '<tr><td colspan="7" class="loading">Error loading orders</td></tr>';
+            }
+        }
+        
+        // Logout
+        window.logout = function() {
+            window.location.href = 'admin.html';
+        };
+        
+        // Initial load
+        loadStats();
+    </script>
+</body>
+</html>

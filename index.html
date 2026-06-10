@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EYFEL GHANA - Premium Fragrances & Diffusers</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Paystack Script - THIS IS IMPORTANT -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>EYFEL <span>GHANA</span></h1>
+                <p>Premium Fragrances</p>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Luxury Fragrances & Diffusers</h1>
+            <p>Experience the essence of elegance with EYFEL GHANA's premium collection</p>
+            <a href="#products" class="cta-button">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About EYFEL GHANA</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>EYFEL GHANA strives to provide the best service, to provide the best quality perfume and Room fragrances to create convenient shopping for everyone. We continue to strive to introduce new unique fragrances and be appreciated as one of the most high-quality fragrance suppliers in Ghana.</p>
+                    <div class="info-box">
+                        <h3>📍 Location</h3>
+                        <p>Behind Mambo Spot & Hotel</p>
+                        <p>Asafoatse Lakai St, Accra</p>
+                        <p>📞 Phone: 055 301 7765</p>
+                        <p>⏰ Hours: Open · Closes 8pm</p>
+                        <p>⭐ 5.0 Google Rating</p>
+                    </div>
+                </div>
+                <div class="about-map">
+                    <iframe src="https://maps.google.com/maps?q=Asafoatse+Lakai+St,+Accra&z=15&output=embed" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <h2>Our Collection</h2>
+            <div class="category-filters">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="Perfume">Perfumes</button>
+                <button class="filter-btn" data-category="Diffuser">Diffusers</button>
+            </div>
+            <div id="products-grid" class="products-grid">
+                <!-- Products will load here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <div class="contact-info">
+                <div class="contact-details">
+                    <h3><i class="fas fa-map-marker-alt"></i> Address</h3>
+                    <p>Behind Mambo Spot & Hotel, Asafoatse Lakai St, Accra</p>
+                    <h3><i class="fas fa-phone"></i> Phone</h3>
+                    <p>055 301 7765</p>
+                    <h3><i class="fas fa-envelope"></i> Email</h3>
+                    <p>info@eyfelghana.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Place Your Order</h2>
+            <form id="orderForm">
+                <input type="hidden" id="productId">
+                <input type="hidden" id="productName">
+                <input type="hidden" id="productPrice">
+                
+                <label for="customerName">Full Name *</label>
+                <input type="text" id="customerName" required>
+                
+                <label for="customerPhone">Phone Number *</label>
+                <input type="tel" id="customerPhone" required>
+                
+                <label for="customerLocation">Delivery Location *</label>
+                <input type="text" id="customerLocation" required placeholder="e.g., Accra, Spintex Road">
+                
+                <label for="quantity">Quantity *</label>
+                <input type="number" id="quantity" min="1" value="1" required>
+                
+                <p>Total: GHS <span id="totalAmount">0</span></p>
+                
+                <button type="submit" class="pay-btn">Proceed to Pay with Paystack</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
